@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+./scripts/mkobs
+./scripts/refbias
+./scripts/refdark
+./scripts/refflat
+./scripts/calmini data/raw/f*.npy
+./scripts/mkplt   results/f*.npy
