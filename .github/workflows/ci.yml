@@ -1,22 +1,24 @@
-name: lint
+name: CI
 
 on:
   push:
   pull_request:
 
 jobs:
-  lint:
+  tests-lint:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-          cache: pip
       - name: Install
         run: |
           pip install -U pip
           pip install flake8
           pip install -e .
+      - name: Test
+        run: pytest
       - name: Lint
         run: flake8 src tests --max-line-length=100
