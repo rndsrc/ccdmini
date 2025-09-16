@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+
+from os  import makedirs, path
+from sys import argv
+import numpy as np
+
+from ccdmini.calib import apply_calibration
+
+from sys import argv
+if len(argv) <= 1:
+    print(f'usage: {argv[0]} FILE1 FILE2 ... FILEN')
+    exit()
+files = argv[1:]
+
+rb = np.load("results/ref/bias.npy")
+rd = np.load("results/ref/dark.npy")
+rf = np.load("results/ref/flat.npy")
+
+makedirs("results", exist_ok=True)
+for f in files:
+    raw = np.load(f)
+    cal = apply_calibration(raw, rb, rd, rf)
+    np.save(path.join("results", path.basename(f)), cal)

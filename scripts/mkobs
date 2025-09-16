@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+
+from os import makedirs, path
+import numpy as np
+
+rng = np.random.default_rng(13)
+makedirs("data/bias", exist_ok=True)
+makedirs("data/dark", exist_ok=True)
+makedirs("data/flat", exist_ok=True)
+makedirs("data/raw",  exist_ok=True)
+
+def save(dir, i, arr):
+    np.save(path.join(dir, f"f{i:03d}.npy"), arr)
+
+shape = (64, 64)
+
+# Bias/Dark/Flat
+for i in range(10): save("data/bias", i, 100 +     rng.normal(0,1,shape))
+for i in range(10): save("data/dark", i,  10 +     rng.normal(0,1,shape))
+for i in range(10): save("data/flat", i,   1 + 0.1*rng.normal(0,1,shape))
+
+# Raw frames: a Gaussian "star" + bias + dark + noise
+YY, XX = np.indices(shape)
+signal = 1000 * np.exp(-((XX-32)**2 + (YY-32)**2)/(2*6**2))
+
+for i in range(100):
+    noise = rng.normal(0,5,shape)
+    save("data/raw", i, signal + 100 + 10 + noise)
