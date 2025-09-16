@@ -1,0 +1,6 @@
+[project]
+name = "ccdmini"
+version = "0.0.0"
+description = "Minimal CCD calibration primitives for ASTR 501"
+requires-python = ">=3.8"
+dependencies = ["numpy", "pytest"]
