@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-./scripts/mkobs
-./scripts/refbias
-./scripts/refdark
-./scripts/refflat
-./scripts/calmini data/raw/f*.npy
-./scripts/mkplt   results/f*.npy
+./scripts/mkobs                     && \
+./scripts/mkref bias data/bias      && \
+./scripts/mkref dark data/dark      && \
+./scripts/mkref flat data/flat      && \
+./scripts/calmini data/raw/f*.npy   && \
+./scripts/mkplt   results/f*.npy    || \
+echo 'Pipeline failed'
